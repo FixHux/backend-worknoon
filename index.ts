@@ -2,7 +2,7 @@ import { config } from './config'
 
 import app from './app'
 
-import { dbConnection } from './startup/db.js'
+import { dbConnection } from './startup/db'
 
 dbConnection()
 

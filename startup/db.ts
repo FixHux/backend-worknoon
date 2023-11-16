@@ -15,3 +15,12 @@ export const dbConnection = async () => {
     console.error('Error connecting to Database:', error);
   }
 };
+
+// Workaround to make TypeScript happy
+declare module 'mongoose' {
+  interface ConnectOptions {
+    useNewUrlParser?: boolean;
+    useUnifiedTopology?: boolean;
+    useCreateIndex?: boolean;
+  }
+}
