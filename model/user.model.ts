@@ -6,13 +6,15 @@ import { customAlphabet } from 'nanoid'
 const nanoid = customAlphabet('0123456789AQWXSCZEDCVFRTGBHYNJUIKLOPaqwxszedcvfrtgbnhyujmkiolp', 17);
 
 export interface UserInput {
-  fullname: string;
+ firstname: string;
+ lastname: string;
   email: string;
   password: string;
 }
 
 export interface UserDocument extends UserInput, Document {
-  fullname: string;
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
   isAdmin: boolean;
@@ -25,7 +27,11 @@ const UserSchema: Schema = new mongoose.Schema(
       type: String,
       default: () => 'usr_' + nanoid(), 
     },
-    fullname: {
+    firstname: {
+      type: String,
+      required: true,
+    },
+    lastname: {
       type: String,
       required: true,
     },
@@ -48,7 +54,7 @@ UserSchema.methods.generateAuthToken = function generatedToken() {
   const token = jwt.sign(
     {
       _id: user._id,
-      fullname: user.fullname,
+      firstname: user.firstname,
       email: user.email,
       isAdmin: user.isAdmin,
       exp: Math.floor(Date.now() / 1000) + expiresIn,

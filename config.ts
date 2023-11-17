@@ -5,7 +5,7 @@ import { IConfig } from './interfaces/iConfig';
 const { env } = process;
 
 dotenv({
-  path: path.resolve(__dirname, '../.env'),
+  path: path.resolve(__dirname, './.env'),
 });
 
 export const config: IConfig = {

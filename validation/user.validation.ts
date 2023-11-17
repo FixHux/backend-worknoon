@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from 'joi'
 
 const passwordRegex = new RegExp(
   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]*)(?=.*[!@#$%^&*_-])(?=.{8,})"
@@ -20,7 +20,6 @@ export const userValidation =  {
       confirm_password: Joi.any()
         .equal(Joi.ref("password"))
         .messages({ "any.only": "{{#label}} does not match" }),
-      sportInterest: Joi.string().min(2).optional(),
     }).with("password", "confirm_password"),
   
     login: Joi.object({
