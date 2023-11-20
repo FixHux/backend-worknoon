@@ -26,6 +26,7 @@ export const userService = {
     if (!validPassword)
       throw new ValidationError('Username or Password not found')
     const token = user.generateAuthToken()
-    return token
+    const refreshToken = user.generateRefreshToken()
+    return {token , refreshToken }
   },
 }

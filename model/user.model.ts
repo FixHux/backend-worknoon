@@ -19,6 +19,7 @@ export interface UserDocument extends UserInput, Document {
   password: string;
   isAdmin: boolean;
   generateAuthToken(): string; 
+  generateRefreshToken():string;
 }
 
 const UserSchema: Schema = new mongoose.Schema(
@@ -48,9 +49,26 @@ const UserSchema: Schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-UserSchema.methods.generateAuthToken = function generatedToken() {
+UserSchema.methods.generateAuthToken = function generateToken() {
   const user = this as UserDocument;
-  const expiresIn = 60 * 60;
+  const expiresIn = 60 * 15; // 15 minutes in seconds
+
+  const payload = {
+    _id: user._id,
+    firstname: user.firstname,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    exp: Math.floor(Date.now() / 1000) + expiresIn,
+  };
+
+  const token = jwt.sign(payload, config.JWT as jwt.Secret);
+  return token;
+};
+
+UserSchema.methods.generateRefreshToken = function generatedToken() {
+  const user = this as UserDocument;
+  const expiresIn = 60 * 60 * 24 * 7;
+
   const token = jwt.sign(
     {
       _id: user._id,
@@ -59,9 +77,11 @@ UserSchema.methods.generateAuthToken = function generatedToken() {
       isAdmin: user.isAdmin,
       exp: Math.floor(Date.now() / 1000) + expiresIn,
     },
-    config.JWT as jwt.Secret
+    config.REFRESH_JWT as jwt.Secret
   );
+
   return token;
 };
+
 
 export default  mongoose.model<UserDocument>('User', UserSchema); 

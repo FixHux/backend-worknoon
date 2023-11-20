@@ -16,9 +16,10 @@ export const userController = {
     const { value, error } = userValidation.login.validate(req.body);
     if (error) return res.status(400).send({ error: error.details[0].message });
     const { email } = value;
-    const token = await userService.loginUser(value)
+    const {token, refreshToken} = await userService.loginUser(value)
     res.header('authorization', token);
-    const data = { email, token };
+    res.cookie('refreshToken', refreshToken);
+    const data = { email, token, refreshToken };
     return ResponseService.success(res, 'Login Successful', data);
   },
 }
