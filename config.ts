@@ -13,4 +13,5 @@ export const config: IConfig = {
   REFRESH_JWT : <string>env.REFRESH_JWT,
   PORT: parseInt(env.PORT!, 10) || 8000,
   MONGODBURI: <string>env.MONGODBURI,
+  FORGOT_PASSWORD :  <string>env.FORGOT_PASSWORD 
 };

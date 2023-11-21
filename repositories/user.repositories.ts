@@ -1,4 +1,5 @@
 import User from '../model/user.model'
+import { FilterQuery, UpdateQuery } from 'mongoose';
 
 export const userRepository = {
   async getOneUser(email: string) {
@@ -10,4 +11,9 @@ export const userRepository = {
     const { _id, __v, password, ...data } = savedUser.toObject()
     return data
   },
+  async  updateUserData(queryParams: FilterQuery<any>, fields: UpdateQuery<any>): Promise<any> {
+    return User.updateOne(fields, {
+      $set: queryParams,
+    });
+  }
 }

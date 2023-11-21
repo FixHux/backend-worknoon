@@ -35,5 +35,17 @@ export const userValidation =  {
             'The "password" must meet the specified criteria: at least one lowercase letter, one uppercase letter, one digit, one special character, and a minimum length of 8 characters.',
         })
         .required(),
-    })
+    }),
+    forgot: Joi.object({
+      email: Joi.string().email().required(),
+      // password: Joi.string()
+      //   .pattern(passwordRegex)
+      //   .max(70)
+      //   .messages({
+      //     "string.pattern.match": '"password" must be stronger',
+      //     "string.pattern.base":
+      //       'The "password" must meet the specified criteria: at least one lowercase letter, one uppercase letter, one digit, one special character, and a minimum length of 8 characters.',
+      //   })
+      //   .required(),
+    }),
   };

@@ -3,4 +3,5 @@ export interface IConfig {
     PORT: number;
     MONGODBURI: string;
     REFRESH_JWT: string;
+    FORGOT_PASSWORD : string
   }
