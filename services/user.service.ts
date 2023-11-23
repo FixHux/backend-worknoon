@@ -45,26 +45,29 @@ export const userService = {
       expiresIn: '20m',
     });
     const firstname = user.firstname
+    await userRepository.updateUserData({emailToken: token}, {
+      code: user?.code
+    })
     await sendForgetPasswordEmail(email,  firstname,token, 'localhost:8000' )
     return email
+  },
+  async resetPassword(value: { token: string; password: string }): Promise<any> {
+    const { token : emailToken, password } = value;
+  
+    const userNameStored = await userRepository.getOneUserData({emailToken});
+    if (!userNameStored) {
+      throw new NotFoundError("Token");
+    }
+    const updatePassword: any = {};
+    updatePassword.emailToken = ""
+    const salt = await bcrypt.genSalt(10);
+    updatePassword.password = await bcrypt.hash(password, salt);
+    const {email} = userNameStored
+    const updatedUser = await userRepository.updateUserData(updatePassword, {
+      email,
+    });
+  
+    return updatedUser;
   }
-  // async resetPassword(value: { email: string; password: string }): Promise<any> {
-  //   const { email, password } = value;
-  
-  //   const userNameStored = await userRepository.getOneUser(email);
-  
-  //   if (!userNameStored) {
-  //     throw new NotFoundError("Email not found");
-  //   }
-  //   const updatePassword: any = {};
-  //   const salt = await bcrypt.genSalt(10);
-  //   updatePassword.password = await bcrypt.hash(password, salt);
-  
-  //   const updatedUser = await userRepository.updateUserData(updatePassword, {
-  //     email,
-  //   });
-  
-  //   return updatedUser;
-  // }
   
 }

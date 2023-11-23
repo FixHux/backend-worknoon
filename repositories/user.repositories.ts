@@ -2,8 +2,12 @@ import User from '../model/user.model'
 import { FilterQuery, UpdateQuery } from 'mongoose';
 
 export const userRepository = {
-  async getOneUser(email: string) {
+  async getOneUser(email:string) {
     const user = await User.findOne({ email }).select('-_id -__v')
+    return user
+  },
+  async getOneUserData(item : any) {
+    const user = await User.findOne(item).select('-_id -__v')
     return user
   },
   async createUser(createUser: {}) {

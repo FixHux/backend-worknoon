@@ -13,6 +13,7 @@ export interface UserInput {
 }
 
 export interface UserDocument extends UserInput, Document {
+  code: string;
   firstname: string;
   lastname: string;
   email: string;
@@ -44,6 +45,11 @@ const UserSchema: Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    emailToken: {
+      type: String,
+      required: false,
+      default: ''
+    }, 
     isAdmin: { type: Boolean, default: false },
   },
   { timestamps: true }

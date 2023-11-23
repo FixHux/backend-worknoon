@@ -33,10 +33,10 @@ export const userController = {
     const data = await userService.forgotPassword(value)
     return ResponseService.success(res, 'Email has been sent, kindly follow the instructions', data)
   },
-  // async resetPassword(req: Request, res: Response): Promise<{}> {
-  //   const { value, error } = userValidation.forgot.validate(req.body)
-  //   if (error) return res.status(400).send({ error: error.details[0].message })
-  //   await userService.resetPassword(value)
-  //   return ResponseService.success(res, 'Password Updated')
-  // },
+  async resetPassword(req: Request, res: Response): Promise<{}> {
+    const { value, error } = userValidation.reset.validate(req.body)
+    if (error) return res.status(400).send({ error: error.details[0].message })
+    await userService.resetPassword(value)
+    return ResponseService.success(res, 'Password Updated')
+  },
 }

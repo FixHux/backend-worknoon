@@ -11,10 +11,10 @@ router.post(
     '/forgot-password',
     asyncErrorhandling(userController.forgotPassword),
   )
-// router.post(
-//   '/forgot-password',
-//   asyncErrorhandling(userController.resetPassword),
-// )
+router.post(
+  '/reset/password',
+  asyncErrorhandling(userController.resetPassword),
+)
 router.get('/refresh-token', refreshAuth)
 
 export default router
