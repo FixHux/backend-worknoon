@@ -62,6 +62,7 @@ UserSchema.methods.generateAuthToken = function generateToken() {
   const payload = {
     _id: user._id,
     firstname: user.firstname,
+    code: user.code,
     email: user.email,
     isAdmin: user.isAdmin,
     exp: Math.floor(Date.now() / 1000) + expiresIn,

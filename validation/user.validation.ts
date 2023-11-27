@@ -60,4 +60,8 @@ export const userValidation =  {
         })
         .required(),
     }),
+    profile: Joi.object({
+      password: Joi.string().optional(),
+      email: Joi.string().optional(),
+    }),
   };

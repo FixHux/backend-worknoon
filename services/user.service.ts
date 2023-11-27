@@ -78,4 +78,17 @@ export const userService = {
 
     return updatedUser
   },
+
+  async updateProfile(value: any): Promise<any> {
+    const {code} = value;
+    if(value.password){
+      const {password} = value
+      await userRepository.updateUserData({password}, {code})
+    }
+    if(value.email){
+      const {email} = value
+      await userRepository.updateUserData({email}, {code})
+    }
+    return code
+  },
 }
