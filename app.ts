@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from 'express'
 import user from './routes/user'
+import workspace from './routes/space'
 import { config } from 'dotenv'
 import cors from 'cors'
 config()
@@ -23,6 +24,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/api/user', user)
+app.use('/api/space', workspace)
 
 
 export default app

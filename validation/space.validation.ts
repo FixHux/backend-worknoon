@@ -60,6 +60,7 @@ export const spaceValidation = {
       secondAddress: Joi.string(),
       townCity: Joi.string(),
       neighbourhood: Joi.string(),
+      country: Joi.string(),
       district: Joi.string(),
     }).required(),
     operatingHours: Joi.object({
@@ -99,7 +100,7 @@ export const spaceValidation = {
       Joi.object({ category: Joi.object({ both: Joi.exist() }) }).unknown(),
       { then: Joi.required() },
     ),
-    disableButton: Joi.boolean().required(),
+    // disableButton: Joi.boolean().required(),
 
     virtualOffice: Joi.boolean(),
 

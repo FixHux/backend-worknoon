@@ -5,4 +5,9 @@ export const spaceService = {
     const workspace = await spaceRepository.createSpace(createSpace)
     return workspace
   },
+
+  async listSpace(queryParams : any) {
+    const listProducts = await spaceRepository.listSpace(queryParams)
+    return listProducts
+  },
 }

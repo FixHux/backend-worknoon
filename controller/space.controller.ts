@@ -18,4 +18,13 @@ export const spaceController = {
     )
     
   },
+
+  async list(req: Request, res: Response): Promise<{}> {
+    const queryParams = {
+      ...req.query,
+    }
+    const data = await spaceService.listSpace(queryParams)
+
+    return ResponseService.success(res, 'Work Spaces Successfully Retrieved', data)
+  },
 }

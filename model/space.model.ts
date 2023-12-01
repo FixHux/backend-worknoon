@@ -86,7 +86,7 @@ interface Workspace extends Document {
   images: string[]
   category: Category
   numberOfOfficesIncluded?: number
-  disableButton: boolean
+  // disableButton: boolean
   virtualOffice?: boolean
   virtualOfficeDetails?: VirtualOfficeDetails
 }
@@ -94,7 +94,7 @@ interface Workspace extends Document {
 const contactDetailsSchema = new Schema<ContactDetails>({
   userId: {
     type: String,
-    required: true,
+    // required: true,
   },
   email: {
     type: String,
@@ -251,7 +251,7 @@ const workspaceSchema = new Schema<Workspace>({
   numberOfOfficesIncluded: Number,
   disableButton: {
     type: Boolean,
-    required: true,
+    // required: true,
   },
   virtualOffice: Boolean,
   virtualOfficeDetails: virtualOfficeDetailsSchema,
