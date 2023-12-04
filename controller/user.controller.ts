@@ -43,7 +43,7 @@ export const userController = {
     return ResponseService.success(res, 'Password Updated')
   },
 
-  async profile(req: Request, res: Response): Promise<{}> {
+  async settings(req: Request, res: Response): Promise<{}> {
     const { value, error } = userValidation.profile.validate(req.body)
     if (error) {
       return res.status(400).send({ error: error.details[0].message })
