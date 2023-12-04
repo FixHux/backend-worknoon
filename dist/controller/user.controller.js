@@ -54,7 +54,7 @@ exports.userController = {
             return response_service_1.ResponseService.success(res, 'Password Updated');
         });
     },
-    profile(req, res) {
+    settings(req, res) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const { value, error } = user_validation_1.userValidation.profile.validate(req.body);

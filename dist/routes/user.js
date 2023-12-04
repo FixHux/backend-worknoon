@@ -17,5 +17,5 @@ router.post('/login', (0, async_1.asyncErrorhandling)(user_controller_1.userCont
 router.post('/forgot-password', (0, async_1.asyncErrorhandling)(user_controller_1.userController.forgotPassword));
 router.post('/reset/password', (0, async_1.asyncErrorhandling)(user_controller_1.userController.resetPassword));
 router.get('/refresh-token', refreshauth_1.refreshAuth);
-router.put('/profile', auth_1.auth, upload.single('profileImage'), user_controller_1.userController.profile);
+router.put('/settings', auth_1.auth, upload.single('profileImage'), user_controller_1.userController.settings);
 exports.default = router;

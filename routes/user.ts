@@ -21,6 +21,6 @@ router.post(
   asyncErrorhandling(userController.resetPassword),
 )
 router.get('/refresh-token', refreshAuth)
-router.put('/profile', auth,  upload.single('profileImage'),userController.profile)
+router.put('/settings', auth,  upload.single('profileImage'),userController.settings)
 
 export default router
