@@ -8,6 +8,8 @@ export const userValidation =  {
       firstname: Joi.string(),
       lastname: Joi.string(),
       email: Joi.string().email(),
+      companyName: Joi.string().optional(),
+      companyAddress:  Joi.string().optional(),
       password: Joi.string()
         .pattern(passwordRegex)
         .max(70)
@@ -35,5 +37,33 @@ export const userValidation =  {
             'The "password" must meet the specified criteria: at least one lowercase letter, one uppercase letter, one digit, one special character, and a minimum length of 8 characters.',
         })
         .required(),
-    })
+    }),
+    forgot: Joi.object({
+      email: Joi.string().email().required(),
+      // password: Joi.string()
+      //   .pattern(passwordRegex)
+      //   .max(70)
+      //   .messages({
+      //     "string.pattern.match": '"password" must be stronger',
+      //     "string.pattern.base":
+      //       'The "password" must meet the specified criteria: at least one lowercase letter, one uppercase letter, one digit, one special character, and a minimum length of 8 characters.',
+      //   })
+      //   .required(),
+    }),
+    reset: Joi.object({
+      token: Joi.string().required(),
+      password: Joi.string()
+        .pattern(passwordRegex)
+        .max(70)
+        .messages({
+          "string.pattern.match": '"password" must be stronger',
+          "string.pattern.base":
+            'The "password" must meet the specified criteria: at least one lowercase letter, one uppercase letter, one digit, one special character, and a minimum length of 8 characters.',
+        })
+        .required(),
+    }),
+    profile: Joi.object({
+      password: Joi.string().optional(),
+      email: Joi.string().optional(),
+    }),
   };
