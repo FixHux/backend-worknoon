@@ -8,6 +8,8 @@ export const userValidation =  {
       firstname: Joi.string(),
       lastname: Joi.string(),
       email: Joi.string().email(),
+      companyName: Joi.string().optional(),
+      companyAddress:  Joi.string().optional(),
       password: Joi.string()
         .pattern(passwordRegex)
         .max(70)
