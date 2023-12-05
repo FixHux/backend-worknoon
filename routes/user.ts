@@ -11,6 +11,7 @@ const upload = multer({ storage });
 const router = express.Router()
 
 router.post('/register', asyncErrorhandling(userController.register))
+router.post('/verify-token', asyncErrorhandling(userController.verifyToken))
 router.post('/login', asyncErrorhandling(userController.login))
 router.post(
     '/forgot-password',

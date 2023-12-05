@@ -15,6 +15,16 @@ export const userController = {
     )
   },
 
+  async verifyToken(req: Request, res: Response): Promise<{}> {
+    const { value, error } = userValidation.create.validate(req.body)
+    if (error) return res.status(400).send({ error: error.details[0].message })
+    const data = await userService.verifyToken(value)
+    return ResponseService.success(
+      res,
+      'Congratulations! You have been successfully verified!',
+      data,
+    )
+  },
   async login(req: Request, res: Response): Promise<{}> {
     const { value, error } = userValidation.login.validate(req.body)
     if (error) return res.status(400).send({ error: error.details[0].message })
