@@ -5,11 +5,11 @@ const passwordRegex = new RegExp(
 );
 export const userValidation =  {
     create: Joi.object({
-      firstname: Joi.string(),
-      lastname: Joi.string(),
+      firstname: Joi.string().required(),
+      lastname: Joi.string().required(),
       email: Joi.string().email(),
-      companyName: Joi.string().min(2).optional(),
-      companyAddress: Joi.string().min(2).optional(),
+      companyName: Joi.string(),
+      companyAddress: Joi.string().allow(''),
       password: Joi.string()
         .pattern(passwordRegex)
         .max(70)
