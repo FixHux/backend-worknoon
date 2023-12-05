@@ -22,7 +22,7 @@ export const userController = {
     const { token, refreshToken } = await userService.loginUser(value)
     res.header('authorization', token)
     res.cookie('refreshToken', refreshToken)
-    const data = { email, token, refreshToken }
+    const data = { email, token }
     return ResponseService.success(res, 'Login Successful', data)
   },
 
