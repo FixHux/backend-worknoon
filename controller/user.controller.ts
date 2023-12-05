@@ -21,7 +21,21 @@ export const userController = {
     const { email } = value
     const { token, refreshToken } = await userService.loginUser(value)
     res.header('authorization', token)
-    res.cookie('refreshToken', refreshToken)
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      secure: true,
+      domain: "*.cyclic.app"
+    })
+    .cookie(
+      'refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "lax",
+    }
+    );
+    // res.cookie('refreshToken', refreshToken)
     const data = { email, token }
     return ResponseService.success(res, 'Login Successful', data)
   },

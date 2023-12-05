@@ -36,11 +36,11 @@ const UserSchema: Schema = new mongoose.Schema(
     },
     companyName: {
       type: String,
-      required: true,
+      required: false,
     },
     companyAddress: {
       type: String,
-      required: true,
+      required: false,
     },
     password: {
       type: String,
