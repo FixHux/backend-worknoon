@@ -38,7 +38,7 @@ export const userService = {
     const {verificationToken} = value
     const user = await userRepository.getOneUser(verificationToken)
     if (!user) throw new NotFoundError('Token')
-    if(user && user.verificationTokenExp > new Date()){
+    if (user && new Date(user.verificationTokenExp) > new Date()) {
       throw new ValidationError('Token has expires')
     }
     const token = user.generateAuthToken()
