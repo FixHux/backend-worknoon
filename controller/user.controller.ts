@@ -3,6 +3,7 @@ import { userValidation } from '../validation/user.validation'
 import { userService } from '../services/user.service'
 import { ResponseService } from '../services/response.service'
 import {generateRandomString} from '../utilis/generateToken'
+import { sendStatusCode } from 'next/dist/server/api-utils'
 
 export const userController = {
   async register(req: Request, res: Response): Promise<{}> {

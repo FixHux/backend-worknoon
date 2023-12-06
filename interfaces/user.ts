@@ -3,5 +3,6 @@ export interface UserInput {
     password: string;
   }
   export interface UserInputRegister extends UserInput {
-    fullname: string;
+    firstName: string;
+    verificationToken: string
   }

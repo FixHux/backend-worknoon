@@ -3,33 +3,32 @@ import jwt from 'jsonwebtoken'
 import { config } from '../config'
 
 export interface UserInput {
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   email: string
   password: string
 }
 
 export interface UserDocument extends UserInput, Document {
   code: string
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   email: string
   password: string
   isAdmin: boolean
   verificationToken: string
   verificationTokenExp: string
-
   generateAuthToken(): string
   generateRefreshToken(): string
 }
 
 const UserSchema: Schema = new mongoose.Schema(
   {
-    firstname: {
+    firstName: {
       type: String,
       required: true,
     },
-    lastname: {
+    lastName: {
       type: String,
       required: true,
     },
@@ -75,7 +74,7 @@ UserSchema.methods.generateAuthToken = function generateToken() {
 
   const payload = {
     _id: user._id,
-    firstname: user.firstname,
+    firstName: user.firstName,
     code: user.code,
     email: user.email,
     isAdmin: user.isAdmin,
@@ -93,7 +92,7 @@ UserSchema.methods.generateRefreshToken = function generatedToken() {
   const token = jwt.sign(
     {
       _id: user._id,
-      firstname: user.firstname,
+      firstName: user.firstName,
       email: user.email,
       isAdmin: user.isAdmin,
       exp: Math.floor(Date.now() / 1000) + expiresIn,

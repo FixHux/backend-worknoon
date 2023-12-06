@@ -7,16 +7,19 @@ import NotFoundError from '../utilis/not-found-error'
 import { config } from '../config'
 import UnprocessableError from '../utilis/not-processed-error'
 import sendForgetPasswordEmail from '../utilis/forgot-password-mail'
+import sendVerificationEmail from '../utilis/register-mail'
 
 export const userService = {
   async createUser(createUser: UserInputRegister) {
-    const user = await userRepository.getOneUser(createUser.email)
+    const {email, verificationToken, firstName} = createUser
+    const user = await userRepository.getOneUser(email)
     if (user)
       throw new ValidationError('User already registered. Proceed to login')
     const salt = await bcrypt.genSalt(10)
     createUser.password = await bcrypt.hash(createUser.password, salt)
     const savedUser = await userRepository.createUser(createUser)
     if (!savedUser) throw new UnprocessableError('Unsaved User')
+    await sendVerificationEmail(email, firstName, verificationToken, )
     return savedUser
   },
 
@@ -60,7 +63,7 @@ export const userService = {
     const token = jwt.sign({ _id: user._id }, config.FORGOT_PASSWORD, {
       expiresIn: '20m',
     })
-    const firstname = user.firstname
+    const firstname = user.firstName
     await userRepository.updateUserData(
       { emailToken: token },
       {
