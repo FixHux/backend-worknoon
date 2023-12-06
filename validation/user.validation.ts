@@ -5,8 +5,8 @@ const passwordRegex = new RegExp(
 );
 export const userValidation =  {
     create: Joi.object({
-      firstname: Joi.string().required(),
-      lastname: Joi.string().required(),
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
       email: Joi.string().email(),
       companyName: Joi.string().optional(),
       companyAddress: Joi.string().allow('').optional(),
@@ -25,8 +25,8 @@ export const userValidation =  {
     }).with("password", "confirm_password"),
   
     login: Joi.object({
-      firstname: Joi.string(),
-      lastname: Joi.string(),
+      firstName: Joi.string(),
+      lastName: Joi.string(),
       email: Joi.string().email(),
       password: Joi.string()
         .pattern(passwordRegex)
