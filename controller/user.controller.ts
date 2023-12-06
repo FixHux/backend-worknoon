@@ -20,7 +20,7 @@ export const userController = {
   },
 
   async verifyToken(req: Request, res: Response): Promise<{}> {
-    const { value, error } = userValidation.create.validate(req.body)
+    const { value, error } = userValidation.verify.validate(req.body)
     if (error) return res.status(400).send({ error: error.details[0].message })
     const data = await userService.verifyToken(value)
     return ResponseService.success(
@@ -29,11 +29,25 @@ export const userController = {
       data,
     )
   },
+  
+  async resendVerificationToken(req: Request, res: Response): Promise<{}> {
+    const { value, error } = userValidation.resendToken.validate(req.body)
+    if (error) return res.status(400).send({ error: error.details[0].message })
+    value.verificationToken = generateRandomString(5);
+    value.verificationTokenExp = new Date(Date.now() + 600000);
+    const data = await userService.resendVerificationToken(value )
+    return ResponseService.success(
+      res,
+      'Congratulations! You have been gotten a email token',
+      data,
+    )
+  },
+
   async login(req: Request, res: Response): Promise<{}> {
     const { value, error } = userValidation.login.validate(req.body)
     if (error) return res.status(400).send({ error: error.details[0].message })
     const { email } = value
-    const { token, refreshToken } = await userService.loginUser(value)
+    const { token, refreshToken, ...user } = await userService.loginUser(value)
     res.header('authorization', token)
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -50,7 +64,7 @@ export const userController = {
     }
     );
     // res.cookie('refreshToken', refreshToken)
-    const data = { email, token }
+    const data = { email, token, ...user }
     return ResponseService.success(res, 'Login Successful', data)
   },
 

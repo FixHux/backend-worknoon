@@ -1,8 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
+import { UserDocument, UserInput } from '../model/user.model';
+import { userRepository } from '../repositories/user.repositories';
 
-export const refreshAuth = (req: Request, res: Response, next: NextFunction) => {
+
+export const refreshAuth = async (req: any, res: Response, next: NextFunction) => {
   const refreshToken = req.cookies('refreshToken')
   if (!refreshToken) {
     return res
@@ -13,7 +16,9 @@ export const refreshAuth = (req: Request, res: Response, next: NextFunction) => 
   try {
     const decoded = jwt.verify(refreshToken, config.REFRESH_JWT);
     req.user = decoded;
-    next();
+    const user = await userRepository.getOneUser(req.user.email)
+    const token = user?.generateAuthToken()
+    return {token}
   } catch (ex) {
     res.status(400).send({ message: 'Invalid refreshToken.' });
   }

@@ -63,7 +63,7 @@ const forgetPasswordEmail = (email: string, username: string, token: string, hos
         </div>
         <div class="email-content">
           <p><strong>Hello, ${username}</p>
-          <p> Click on this <a href="/${token}">link </a>to reset your password</p>
+          <p> Click on this <a href="http://localhost:3000/change-password/${token}">link </a>to reset your password</p>
         </div>
       </div>
     </body>
