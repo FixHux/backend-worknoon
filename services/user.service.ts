@@ -34,19 +34,19 @@ export const userService = {
     return { token, refreshToken }
   },
 
-  async verifyToken(loginUser: UserInput) {
-    const user = await userRepository.getOneUser(loginUser.email)
-    if (!user) throw new ValidationError('Username or Password not found')
-    const validPassword = await bcrypt.compare(
-      loginUser.password,
-      user.password,
-    )
-    if (!validPassword)
-      throw new ValidationError('Username or Password not found')
+  async verifyToken(value: any) {
+    const {verificationToken} = value
+    const user = await userRepository.getOneUser(verificationToken)
+    if (!user) throw new NotFoundError('Token')
+    if(user && user.verificationTokenExp > new Date()){
+      throw new ValidationError('Token has expires')
+    }
     const token = user.generateAuthToken()
     const refreshToken = user.generateRefreshToken()
     return { token, refreshToken }
   },
+
+
   async forgotPassword(value: {
     email: string
     password: string

@@ -16,6 +16,9 @@ export interface UserDocument extends UserInput, Document {
   email: string
   password: string
   isAdmin: boolean
+  verificationToken: string
+  verificationTokenExp: string
+
   generateAuthToken(): string
   generateRefreshToken(): string
 }
@@ -47,6 +50,16 @@ const UserSchema: Schema = new mongoose.Schema(
       required: true,
     },
     emailToken: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    verificationToken:{
+      type: String,
+      required: false,
+      default: '',
+    },
+    verificationTokenExp: {
       type: String,
       required: false,
       default: '',
