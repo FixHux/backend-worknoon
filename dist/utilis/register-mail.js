@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mail_transporter_1 = __importDefault(require("./mail-transporter"));
-const forgetPasswordEmail = (email, username, token, host) => {
+const registerEmail = (email, username, token) => {
     const data = {
         to: email,
         from: "fisayo@hux.vc",
-        subject: `Reset Password`,
+        subject: `Email Verification`,
         html: `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -68,7 +68,7 @@ const forgetPasswordEmail = (email, username, token, host) => {
         </div>
         <div class="email-content">
           <p><strong>Hello, ${username}</p>
-          <p> Click on this <a href="http://localhost:3000/change-password/${token}">link </a>to reset your password</p>
+          <h1> ${token}</h1>
         </div>
       </div>
     </body>
@@ -76,7 +76,7 @@ const forgetPasswordEmail = (email, username, token, host) => {
     };
     return data;
 };
-const sendForgetPasswordEmail = (email, username, token, host) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield mail_transporter_1.default.sendMail(forgetPasswordEmail(email, username, token, host));
+const sendVerificationEmail = (email, username, token) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield mail_transporter_1.default.sendMail(registerEmail(email, username, token));
 });
-exports.default = sendForgetPasswordEmail;
+exports.default = sendVerificationEmail;

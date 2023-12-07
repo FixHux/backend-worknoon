@@ -5,8 +5,9 @@ import { UserDocument, UserInput } from '../model/user.model';
 import { userRepository } from '../repositories/user.repositories';
 
 
-export const refreshAuth = async (req: any, res: Response, next: NextFunction) => {
-  const refreshToken = req.cookies('refreshToken')
+export const refreshAuth = async (req: Request, res: Response, next: NextFunction) => {
+  const refreshToken = req.cookies?.refreshToken
+  console.log(req.cookies)
   if (!refreshToken) {
     return res
       .status(401)
@@ -18,7 +19,7 @@ export const refreshAuth = async (req: any, res: Response, next: NextFunction) =
     req.user = decoded;
     const user = await userRepository.getOneUser(req.user.email)
     const token = user?.generateAuthToken()
-    return {token}
+    return res.json({ token });
   } catch (ex) {
     res.status(400).send({ message: 'Invalid refreshToken.' });
   }

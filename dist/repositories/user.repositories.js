@@ -28,7 +28,7 @@ const user_model_1 = __importDefault(require("../model/user.model"));
 exports.userRepository = {
     getOneUser(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield user_model_1.default.findOne({ email }).select('-_id -__v');
+            const user = yield user_model_1.default.findOne({ email }).select('-__v ');
             return user;
         });
     },

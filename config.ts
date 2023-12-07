@@ -1,10 +1,13 @@
 import path from 'path';
-import { config as dotenv } from 'dotenv';
+
+import dotenv, { config as dotenv2 } from 'dotenv';
 import { IConfig } from './interfaces/iConfig';
 
 const { env } = process;
 
-dotenv({
+dotenv.config()
+
+dotenv2({
   path: path.resolve(__dirname, './.env'),
 });
 

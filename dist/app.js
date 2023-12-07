@@ -7,10 +7,19 @@ const express_1 = __importDefault(require("express"));
 const user_1 = __importDefault(require("./routes/user"));
 const space_1 = __importDefault(require("./routes/space"));
 const dotenv_1 = require("dotenv");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
+const morgan_1 = __importDefault(require("morgan"));
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)({ origin: '*' }));
+app.use((0, cors_1.default)({
+    origin: ["http://localhost:3000", "https://worknoon.vercel.app/", "https://worknoon-chisomije92.vercel.app/", "*"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    exposedHeaders: ["Set-Cookie"],
+    credentials: true,
+}));
+app.use((0, cookie_parser_1.default)());
+app.use((0, morgan_1.default)("common"));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.get('/', (req, res) => {

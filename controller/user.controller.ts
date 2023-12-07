@@ -3,7 +3,6 @@ import { userValidation } from '../validation/user.validation'
 import { userService } from '../services/user.service'
 import { ResponseService } from '../services/response.service'
 import {generateRandomString} from '../utilis/generateToken'
-import { sendStatusCode } from 'next/dist/server/api-utils'
 
 export const userController = {
   async register(req: Request, res: Response): Promise<{}> {
@@ -23,6 +22,21 @@ export const userController = {
     const { value, error } = userValidation.verify.validate(req.body)
     if (error) return res.status(400).send({ error: error.details[0].message })
     const data = await userService.verifyToken(value)
+   res.header('authorization', data.token)
+    res.cookie('refreshToken', data.refreshToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      secure: true,
+      domain: "*.cyclic.app"
+    })
+    .cookie(
+      'refreshToken', data.refreshToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "lax",
+    }
+    );
     return ResponseService.success(
       res,
       'Congratulations! You have been successfully verified!',
@@ -36,6 +50,7 @@ export const userController = {
     value.verificationToken = generateRandomString(5);
     value.verificationTokenExp = new Date(Date.now() + 600000);
     const data = await userService.resendVerificationToken(value )
+    
     return ResponseService.success(
       res,
       'Congratulations! You have been gotten a email token',

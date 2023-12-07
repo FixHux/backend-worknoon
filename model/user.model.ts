@@ -78,7 +78,8 @@ UserSchema.methods.generateAuthToken = function generateToken() {
     code: user.code,
     email: user.email,
     isAdmin: user.isAdmin,
-    exp: Math.floor(Date.now() / 1000) + expiresIn,
+    // exp: Math.floor(Date.now() / 1000) + expiresIn,
+    exp: Math.floor(Date.now() / 1000) + 60,
   }
 
   const token = jwt.sign(payload, config.JWT as jwt.Secret)
