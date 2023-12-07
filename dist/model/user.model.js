@@ -7,11 +7,11 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../config");
 const UserSchema = new mongoose_1.default.Schema({
-    firstname: {
+    firstName: {
         type: String,
         required: true,
     },
-    lastname: {
+    lastName: {
         type: String,
         required: true,
     },
@@ -21,17 +21,27 @@ const UserSchema = new mongoose_1.default.Schema({
     },
     companyName: {
         type: String,
-        required: true,
+        required: false,
     },
     companyAddress: {
         type: String,
-        required: true,
+        required: false,
     },
     password: {
         type: String,
         required: true,
     },
     emailToken: {
+        type: String,
+        required: false,
+        default: '',
+    },
+    verificationToken: {
+        type: String,
+        required: false,
+        default: '',
+    },
+    verificationTokenExp: {
         type: String,
         required: false,
         default: '',
@@ -43,7 +53,7 @@ UserSchema.methods.generateAuthToken = function generateToken() {
     const expiresIn = 60 * 15; // 15 minutes in seconds
     const payload = {
         _id: user._id,
-        firstname: user.firstname,
+        firstName: user.firstName,
         code: user.code,
         email: user.email,
         isAdmin: user.isAdmin,
@@ -57,7 +67,7 @@ UserSchema.methods.generateRefreshToken = function generatedToken() {
     const expiresIn = 60 * 60 * 24 * 7;
     const token = jsonwebtoken_1.default.sign({
         _id: user._id,
-        firstname: user.firstname,
+        firstName: user.firstName,
         email: user.email,
         isAdmin: user.isAdmin,
         exp: Math.floor(Date.now() / 1000) + expiresIn,
