@@ -17,7 +17,7 @@ const app: Application = express()
 
 app.use(cors<Request>(
   {
-    origin: ["http://localhost:3000", "https://worknoon.vercel.app/", "https://worknoon-chisomije92.vercel.app/"],
+    origin: ["http://localhost:3000", "https://worknoon.vercel.app/", "https://worknoon-chisomije92.vercel.app/", "*"],
     methods: ["GET", "POST", "PUT", "DELETE"],
      exposedHeaders: ["Set-Cookie"],
     credentials: true,
