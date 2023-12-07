@@ -3,11 +3,11 @@ import { FilterQuery, UpdateQuery } from 'mongoose';
 
 export const userRepository = {
   async getOneUser(email:string) {
-    const user = await User.findOne({ email }).select('-_id -__v')
+    const user = await User.findOne({ email }).select('-__v')
     return user
   },
   async getOneUserData(item : any) {
-    const user = await User.findOne(item).select('-_id -__v')
+    const user = await User.findOne(item).select('-__v')
     return user
   },
   async createUser(createUser: {}) {
