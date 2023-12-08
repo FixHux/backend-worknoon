@@ -13,7 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mail_transporter_1 = __importDefault(require("./mail-transporter"));
-const forgetPasswordEmail = (email, username, token, host) => {
+const config_1 = require("../config");
+const { FORGOT_PASSWORD_URL } = config_1.config;
+const forgetPasswordEmail = (email, username, token) => {
     const data = {
         to: email,
         from: "fisayo@hux.vc",
@@ -68,7 +70,7 @@ const forgetPasswordEmail = (email, username, token, host) => {
         </div>
         <div class="email-content">
           <p><strong>Hello, ${username}</p>
-          <p> Click on this <a href="http://localhost:3000/change-password/${token}">link </a>to reset your password</p>
+          <p> Click on this <a href="${FORGOT_PASSWORD_URL}/change-password/${token}">link </a>to reset your password</p>
         </div>
       </div>
     </body>
@@ -77,6 +79,6 @@ const forgetPasswordEmail = (email, username, token, host) => {
     return data;
 };
 const sendForgetPasswordEmail = (email, username, token, host) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield mail_transporter_1.default.sendMail(forgetPasswordEmail(email, username, token, host));
+    return yield mail_transporter_1.default.sendMail(forgetPasswordEmail(email, username, token));
 });
 exports.default = sendForgetPasswordEmail;

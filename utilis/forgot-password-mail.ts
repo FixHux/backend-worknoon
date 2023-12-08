@@ -1,6 +1,8 @@
 import transporter from "./mail-transporter";
 import { SentMessageInfo } from "nodemailer";
+import { config } from "../config";
 
+const { FORGOT_PASSWORD_URL } = config;
 interface EmailData {
   to: string;
   from: string;
@@ -8,7 +10,11 @@ interface EmailData {
   html: string;
 }
 
-const forgetPasswordEmail = (email: string, username: string, token: string, host: string): EmailData => {
+const forgetPasswordEmail = (
+  email: string,
+  username: string,
+  token: string
+): EmailData => {
   const data: EmailData = {
     to: email,
     from: "fisayo@hux.vc",
@@ -63,7 +69,7 @@ const forgetPasswordEmail = (email: string, username: string, token: string, hos
         </div>
         <div class="email-content">
           <p><strong>Hello, ${username}</p>
-          <p> Click on this <a href="http://localhost:3000/change-password/${token}">link </a>to reset your password</p>
+          <p> Click on this <a href="${FORGOT_PASSWORD_URL}/change-password/${token}">link </a>to reset your password</p>
         </div>
       </div>
     </body>
@@ -72,8 +78,15 @@ const forgetPasswordEmail = (email: string, username: string, token: string, hos
   return data;
 };
 
-const sendForgetPasswordEmail = async (email: string, username: string, token: string, host: string): Promise<SentMessageInfo> => {
-  return await transporter.sendMail(forgetPasswordEmail(email, username, token, host));
+const sendForgetPasswordEmail = async (
+  email: string,
+  username: string,
+  token: string,
+  host: string
+): Promise<SentMessageInfo> => {
+  return await transporter.sendMail(
+    forgetPasswordEmail(email, username, token)
+  );
 };
 
 export default sendForgetPasswordEmail;

@@ -32,12 +32,13 @@ const dotenv_1 = __importStar(require("dotenv"));
 const { env } = process;
 dotenv_1.default.config();
 (0, dotenv_1.config)({
-    path: path_1.default.resolve(__dirname, './.env'),
+    path: path_1.default.resolve(__dirname, "./.env"),
 });
 exports.config = {
     JWT: env.JWT_SECRET,
     REFRESH_JWT: env.REFRESH_JWT,
     PORT: parseInt(env.PORT, 10) || 8000,
     MONGODBURI: env.MONGODBURI,
-    FORGOT_PASSWORD: env.FORGOT_PASSWORD
+    FORGOT_PASSWORD: env.FORGOT_PASSWORD,
+    FORGOT_PASSWORD_URL: env.FORGOT_PASSWORD_URL || "http://localhost:3000",
 };
