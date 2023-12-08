@@ -1,25 +1,25 @@
-import mongoose, { Schema, Document } from 'mongoose'
-import jwt from 'jsonwebtoken'
-import { config } from '../config'
+import mongoose, { Schema, Document } from "mongoose";
+import jwt from "jsonwebtoken";
+import { config } from "../config";
 
 export interface UserInput {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
 }
 
 export interface UserDocument extends UserInput, Document {
-  code: string
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  isAdmin: boolean
-  verificationToken: string
-  verificationTokenExp: string
-  generateAuthToken(): string
-  generateRefreshToken(): string
+  code: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+  verificationToken: string;
+  verificationTokenExp: string;
+  generateAuthToken(): string;
+  generateRefreshToken(): string;
 }
 
 const UserSchema: Schema = new mongoose.Schema(
@@ -51,26 +51,26 @@ const UserSchema: Schema = new mongoose.Schema(
     emailToken: {
       type: String,
       required: false,
-      default: '',
+      default: "",
     },
-    verificationToken:{
+    verificationToken: {
       type: String,
       required: false,
-      default: '',
+      default: "",
     },
     verificationTokenExp: {
       type: String,
       required: false,
-      default: '',
+      default: "",
     },
     isAdmin: { type: Boolean, default: false },
   },
-  { timestamps: true },
-)
+  { timestamps: true }
+);
 
 UserSchema.methods.generateAuthToken = function generateToken() {
-  const user = this as UserDocument
-  const expiresIn = 60 * 15 // 15 minutes in seconds
+  const user = this as UserDocument;
+  const expiresIn = 60 * 15; // 15 minutes in seconds
 
   const payload = {
     _id: user._id,
@@ -78,17 +78,16 @@ UserSchema.methods.generateAuthToken = function generateToken() {
     code: user.code,
     email: user.email,
     isAdmin: user.isAdmin,
-    // exp: Math.floor(Date.now() / 1000) + expiresIn,
-    exp: Math.floor(Date.now() / 1000) + 60,
-  }
+    exp: Math.floor(Date.now() / 1000) + expiresIn,
+  };
 
-  const token = jwt.sign(payload, config.JWT as jwt.Secret)
-  return token
-}
+  const token = jwt.sign(payload, config.JWT as jwt.Secret);
+  return token;
+};
 
 UserSchema.methods.generateRefreshToken = function generatedToken() {
-  const user = this as UserDocument
-  const expiresIn = 60 * 60 * 24 * 7
+  const user = this as UserDocument;
+  const expiresIn = 60 * 60 * 24 * 7;
 
   const token = jwt.sign(
     {
@@ -98,10 +97,10 @@ UserSchema.methods.generateRefreshToken = function generatedToken() {
       isAdmin: user.isAdmin,
       exp: Math.floor(Date.now() / 1000) + expiresIn,
     },
-    config.REFRESH_JWT as jwt.Secret,
-  )
+    config.REFRESH_JWT as jwt.Secret
+  );
 
-  return token
-}
+  return token;
+};
 
-export default mongoose.model<UserDocument>('User', UserSchema)
+export default mongoose.model<UserDocument>("User", UserSchema);

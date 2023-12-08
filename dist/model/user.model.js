@@ -34,17 +34,17 @@ const UserSchema = new mongoose_1.default.Schema({
     emailToken: {
         type: String,
         required: false,
-        default: '',
+        default: "",
     },
     verificationToken: {
         type: String,
         required: false,
-        default: '',
+        default: "",
     },
     verificationTokenExp: {
         type: String,
         required: false,
-        default: '',
+        default: "",
     },
     isAdmin: { type: Boolean, default: false },
 }, { timestamps: true });
@@ -57,8 +57,7 @@ UserSchema.methods.generateAuthToken = function generateToken() {
         code: user.code,
         email: user.email,
         isAdmin: user.isAdmin,
-        // exp: Math.floor(Date.now() / 1000) + expiresIn,
-        exp: Math.floor(Date.now() / 1000) + 60,
+        exp: Math.floor(Date.now() / 1000) + expiresIn,
     };
     const token = jsonwebtoken_1.default.sign(payload, config_1.config.JWT);
     return token;
@@ -75,4 +74,4 @@ UserSchema.methods.generateRefreshToken = function generatedToken() {
     }, config_1.config.REFRESH_JWT);
     return token;
 };
-exports.default = mongoose_1.default.model('User', UserSchema);
+exports.default = mongoose_1.default.model("User", UserSchema);

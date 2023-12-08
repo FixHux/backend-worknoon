@@ -22,18 +22,19 @@ const config_1 = require("../config");
 const not_processed_error_1 = __importDefault(require("../utilis/not-processed-error"));
 const forgot_password_mail_1 = __importDefault(require("../utilis/forgot-password-mail"));
 const register_mail_1 = __importDefault(require("../utilis/register-mail"));
+const conflict_error_1 = __importDefault(require("../utilis/conflict-error"));
 exports.userService = {
     createUser(createUser) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, verificationToken, firstName } = createUser;
             const user = yield user_repositories_1.userRepository.getOneUser(email);
             if (user)
-                throw new validation_error_1.default('User already registered. Proceed to login');
+                throw new conflict_error_1.default("User already registered. Proceed to login");
             const salt = yield bcrypt_1.default.genSalt(10);
             createUser.password = yield bcrypt_1.default.hash(createUser.password, salt);
             const savedUser = yield user_repositories_1.userRepository.createUser(createUser);
             if (!savedUser)
-                throw new not_processed_error_1.default('Unsaved User');
+                throw new not_processed_error_1.default("Unsaved User");
             yield (0, register_mail_1.default)(email, firstName, verificationToken);
             return savedUser;
         });
@@ -42,10 +43,10 @@ exports.userService = {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield user_repositories_1.userRepository.getOneUser(loginUser.email);
             if (!user)
-                throw new validation_error_1.default('Username or Password not found');
+                throw new validation_error_1.default("Username or Password not found");
             const validPassword = yield bcrypt_1.default.compare(loginUser.password, user.password);
             if (!validPassword)
-                throw new validation_error_1.default('Username or Password not found');
+                throw new validation_error_1.default("Username or Password not found");
             const token = user.generateAuthToken();
             const refreshToken = user.generateRefreshToken();
             return { token, refreshToken, user };
@@ -56,15 +57,15 @@ exports.userService = {
             const { verificationToken } = value;
             const user = yield user_repositories_1.userRepository.getOneUserData({ verificationToken });
             if (!user)
-                throw new not_found_error_1.default('Token');
+                throw new not_found_error_1.default("Token");
             const { email } = user;
             const expirationTime = new Date(user.verificationTokenExp);
             const currentDateTime = new Date();
             const twentyMinutesAgo = new Date(currentDateTime.getTime() - 20 * 60 * 1000); // 20 minutes in milliseconds
             if (expirationTime < twentyMinutesAgo) {
-                throw new validation_error_1.default('Token has expired');
+                throw new validation_error_1.default("Token has expired");
             }
-            yield user_repositories_1.userRepository.updateUserData({ verificationToken: '', verificationTokenExp: '' }, {
+            yield user_repositories_1.userRepository.updateUserData({ verificationToken: "", verificationTokenExp: "" }, {
                 email,
             });
             const token = user.generateAuthToken();
@@ -77,7 +78,7 @@ exports.userService = {
             const { verificationToken: VT, email, verificationTokenExp: VE } = value;
             const user = yield user_repositories_1.userRepository.getOneUserData({ email });
             if (!user)
-                throw new not_found_error_1.default('Email');
+                throw new not_found_error_1.default("Email");
             const { firstName } = user;
             yield (0, register_mail_1.default)(email, firstName, VT);
             yield user_repositories_1.userRepository.updateUserData({ verificationToken: VT, verificationTokenExp: VE }, {
@@ -91,16 +92,17 @@ exports.userService = {
             const { email } = value;
             const user = yield user_repositories_1.userRepository.getOneUser(email);
             if (!user) {
-                throw new not_found_error_1.default('Email not found');
+                throw new not_found_error_1.default("Email not found");
             }
             const token = jsonwebtoken_1.default.sign({ _id: user._id }, config_1.config.FORGOT_PASSWORD, {
-                expiresIn: '20m',
+                expiresIn: "20m",
             });
             const firstname = user.firstName;
             yield user_repositories_1.userRepository.updateUserData({ emailToken: token }, {
-                code: user === null || user === void 0 ? void 0 : user.code,
+                // code: user?.code,
+                email: user === null || user === void 0 ? void 0 : user.email,
             });
-            yield (0, forgot_password_mail_1.default)(email, firstname, token, 'localhost:8000');
+            yield (0, forgot_password_mail_1.default)(email, firstname, token, "localhost:8000");
             return email;
         });
     },
@@ -109,10 +111,10 @@ exports.userService = {
             const { token: emailToken, password } = value;
             const userNameStored = yield user_repositories_1.userRepository.getOneUserData({ emailToken });
             if (!userNameStored) {
-                throw new not_found_error_1.default('Token');
+                throw new not_found_error_1.default("Token");
             }
             const updatePassword = {};
-            updatePassword.emailToken = '';
+            updatePassword.emailToken = "";
             const salt = yield bcrypt_1.default.genSalt(10);
             updatePassword.password = yield bcrypt_1.default.hash(password, salt);
             const { email } = userNameStored;
