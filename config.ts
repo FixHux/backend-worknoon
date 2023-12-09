@@ -1,17 +1,22 @@
-import path from 'path';
-import { config as dotenv } from 'dotenv';
-import { IConfig } from './interfaces/iConfig';
+import path from "path";
+
+import dotenv, { config as dotenv2 } from "dotenv";
+import { IConfig } from "./interfaces/iConfig";
 
 const { env } = process;
 
-dotenv({
-  path: path.resolve(__dirname, './.env'),
+dotenv.config();
+
+dotenv2({
+  path: path.resolve(__dirname, "./.env"),
 });
 
 export const config: IConfig = {
   JWT: <string>env.JWT_SECRET,
-  REFRESH_JWT : <string>env.REFRESH_JWT,
+  REFRESH_JWT: <string>env.REFRESH_JWT,
   PORT: parseInt(env.PORT!, 10) || 8000,
   MONGODBURI: <string>env.MONGODBURI,
-  FORGOT_PASSWORD :  <string>env.FORGOT_PASSWORD 
+  FORGOT_PASSWORD: <string>env.FORGOT_PASSWORD,
+  FORGOT_PASSWORD_URL:
+    <string>env.FORGOT_PASSWORD_URL || "http://localhost:3000",
 };

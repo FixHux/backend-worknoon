@@ -11,7 +11,7 @@ exports.userValidation = {
         firstName: joi_1.default.string().required(),
         lastName: joi_1.default.string().required(),
         email: joi_1.default.string().email(),
-        companyName: joi_1.default.string().optional(),
+        companyName: joi_1.default.string().allow('').optional(),
         companyAddress: joi_1.default.string().allow('').optional(),
         password: joi_1.default.string()
             .pattern(passwordRegex)

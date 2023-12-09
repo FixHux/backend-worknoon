@@ -34,7 +34,7 @@ exports.userController = {
             value.verificationToken = (0, generateToken_1.generateRandomString)(5);
             value.verificationTokenExp = new Date(Date.now() + 600000); // 10 mins
             const data = yield user_service_1.userService.createUser(value);
-            return response_service_1.ResponseService.success(res, 'Welcome! You have successfully sign up. Proceed to login', data);
+            return response_service_1.ResponseService.success(res, "Welcome! You have successfully sign up. Proceed to login", data);
         });
     },
     verifyToken(req, res) {
@@ -43,7 +43,21 @@ exports.userController = {
             if (error)
                 return res.status(400).send({ error: error.details[0].message });
             const data = yield user_service_1.userService.verifyToken(value);
-            return response_service_1.ResponseService.success(res, 'Congratulations! You have been successfully verified!', data);
+            res.header("authorization", data.token);
+            res
+                .cookie("refreshToken", data.refreshToken, {
+                httpOnly: true,
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                sameSite: "none",
+                secure: true,
+                domain: "*.cyclic.app",
+            })
+                .cookie("refreshToken", data.refreshToken, {
+                httpOnly: true,
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                sameSite: "lax",
+            });
+            return response_service_1.ResponseService.success(res, "Congratulations! You have been successfully verified!", data);
         });
     },
     resendVerificationToken(req, res) {
@@ -54,7 +68,7 @@ exports.userController = {
             value.verificationToken = (0, generateToken_1.generateRandomString)(5);
             value.verificationTokenExp = new Date(Date.now() + 600000);
             const data = yield user_service_1.userService.resendVerificationToken(value);
-            return response_service_1.ResponseService.success(res, 'Congratulations! You have been gotten a email token', data);
+            return response_service_1.ResponseService.success(res, "Congratulations! You have been gotten a email token", data);
         });
     },
     login(req, res) {
@@ -64,22 +78,23 @@ exports.userController = {
                 return res.status(400).send({ error: error.details[0].message });
             const { email } = value;
             const _a = yield user_service_1.userService.loginUser(value), { token, refreshToken } = _a, user = __rest(_a, ["token", "refreshToken"]);
-            res.header('authorization', token);
-            res.cookie('refreshToken', refreshToken, {
+            res.header("authorization", token);
+            res
+                .cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 maxAge: 7 * 24 * 60 * 60 * 1000,
                 sameSite: "none",
                 secure: true,
-                domain: "*.cyclic.app"
+                domain: "*.cyclic.app",
             })
-                .cookie('refreshToken', refreshToken, {
+                .cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 maxAge: 7 * 24 * 60 * 60 * 1000,
                 sameSite: "lax",
             });
             // res.cookie('refreshToken', refreshToken)
             const data = Object.assign({ email, token }, user);
-            return response_service_1.ResponseService.success(res, 'Login Successful', data);
+            return response_service_1.ResponseService.success(res, "Login Successful", data);
         });
     },
     forgotPassword(req, res) {
@@ -88,7 +103,7 @@ exports.userController = {
             if (error)
                 return res.status(400).send({ error: error.details[0].message });
             const data = yield user_service_1.userService.forgotPassword(value);
-            return response_service_1.ResponseService.success(res, 'Email has been sent, kindly follow the instructions', data);
+            return response_service_1.ResponseService.success(res, "Email has been sent, kindly follow the instructions", data);
         });
     },
     resetPassword(req, res) {
@@ -97,7 +112,7 @@ exports.userController = {
             if (error)
                 return res.status(400).send({ error: error.details[0].message });
             yield user_service_1.userService.resetPassword(value);
-            return response_service_1.ResponseService.success(res, 'Password Updated');
+            return response_service_1.ResponseService.success(res, "Password Updated");
         });
     },
     settings(req, res) {
@@ -109,7 +124,7 @@ exports.userController = {
             }
             value.code = (_a = req.user) === null || _a === void 0 ? void 0 : _a.code;
             yield user_service_1.userService.updateProfile(value);
-            return response_service_1.ResponseService.success(res, 'Profile Updated');
+            return response_service_1.ResponseService.success(res, "Profile Updated");
         });
     },
 };

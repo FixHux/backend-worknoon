@@ -17,21 +17,22 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../config");
 const user_repositories_1 = require("../repositories/user.repositories");
 const refreshAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const refreshToken = req.cookies('refreshToken');
+    var _a;
+    const refreshToken = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.refreshToken;
     if (!refreshToken) {
         return res
             .status(401)
-            .send({ message: 'Access denied. No refreshToken provided' });
+            .send({ message: "Access denied. No refreshToken provided" });
     }
     try {
         const decoded = jsonwebtoken_1.default.verify(refreshToken, config_1.config.REFRESH_JWT);
         req.user = decoded;
         const user = yield user_repositories_1.userRepository.getOneUser(req.user.email);
         const token = user === null || user === void 0 ? void 0 : user.generateAuthToken();
-        return { token };
+        return res.json({ token });
     }
     catch (ex) {
-        res.status(400).send({ message: 'Invalid refreshToken.' });
+        res.status(400).send({ message: "Invalid refreshToken." });
     }
 });
 exports.refreshAuth = refreshAuth;

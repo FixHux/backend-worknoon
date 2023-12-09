@@ -20,13 +20,13 @@ const dbConnection = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield mongoose_1.default.connect(MONGODBURI, {
             useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true
+            useUnifiedTopology: true, // Enables the new unified topology engine
+            // useCreateIndex: true
         });
         console.log(`Connected to Database`);
     }
     catch (error) {
-        console.error('Error connecting to Database:', error);
+        console.error("Error connecting to Database:", error);
     }
 });
 exports.dbConnection = dbConnection;

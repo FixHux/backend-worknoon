@@ -15,6 +15,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     req.user = decoded;
     next();
   } catch (ex) {
-    res.status(400).send({ message: 'Invalid token.' });
+    res.status(401).send({ message: 'Invalid token.' });
   }
 };

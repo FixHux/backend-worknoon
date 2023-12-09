@@ -2,13 +2,15 @@ import express, { Application, Request, Response } from 'express'
 import user from './routes/user'
 import workspace from './routes/space'
 import { config } from 'dotenv'
+import cookieParser from 'cookie-parser';
 import cors from 'cors'
+import morgan from 'morgan';
 config()
 
 declare global {
   namespace Express {
     interface Request {
-      user?: {}
+      user?: any
     }
   }
 }
@@ -23,6 +25,8 @@ app.use(cors<Request>(
     credentials: true,
   }
 ))
+app.use(cookieParser());
+app.use(morgan("common"));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
@@ -32,6 +36,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/user', user)
 app.use('/api/space', workspace)
+
 
 
 export default app

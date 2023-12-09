@@ -19,7 +19,7 @@ const auth = (req, res, next) => {
         next();
     }
     catch (ex) {
-        res.status(400).send({ message: 'Invalid token.' });
+        res.status(401).send({ message: 'Invalid token.' });
     }
 };
 exports.auth = auth;
