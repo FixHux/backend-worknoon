@@ -8,7 +8,7 @@ export const userValidation = {
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
     email: Joi.string().email(),
-    companyName: Joi.string().optional(),
+    companyName: Joi.string().allow('').optional(),
     companyAddress: Joi.string().allow('').optional(),
     password: Joi.string()
       .pattern(passwordRegex)

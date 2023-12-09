@@ -17,9 +17,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../config");
 const user_repositories_1 = require("../repositories/user.repositories");
 const refreshAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const refreshToken = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.refreshToken;
-    console.log(req.cookies);
+    const refreshToken = req.cookies('refreshToken');
     if (!refreshToken) {
         return res
             .status(401)
@@ -30,7 +28,7 @@ const refreshAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         req.user = decoded;
         const user = yield user_repositories_1.userRepository.getOneUser(req.user.email);
         const token = user === null || user === void 0 ? void 0 : user.generateAuthToken();
-        return res.json({ token });
+        return { token };
     }
     catch (ex) {
         res.status(400).send({ message: 'Invalid refreshToken.' });

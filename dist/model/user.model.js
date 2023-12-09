@@ -46,6 +46,16 @@ const UserSchema = new mongoose_1.default.Schema({
         required: false,
         default: "",
     },
+    verificationToken: {
+        type: String,
+        required: false,
+        default: '',
+    },
+    verificationTokenExp: {
+        type: String,
+        required: false,
+        default: '',
+    },
     isAdmin: { type: Boolean, default: false },
 }, { timestamps: true });
 UserSchema.methods.generateAuthToken = function generateToken() {
