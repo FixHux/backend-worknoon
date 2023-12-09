@@ -15,7 +15,7 @@ export const validateUser = async (req: any, res: Response, next: NextFunction) 
   }
 
   try {
-    res.status(200).send({message: "User validated!", user});
+    res.status(200).send({message: "User validated!", data:user});
   } catch (ex) {
     res.status(500).send({ message: 'Invalid Credentials' });
     next(ex);
